@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="17.12">
+<procedure name="main">
+<interface/>
+<body>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 数学运算（Arithmetic）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c></c>
+<c>*****************************************************************</c>
+<c>* 加、减、乘、除、取负、绝对值、取整、取余、最大最小值、累加</c>
+<c>*****************************************************************</c>
+<c>* 如果两个输入元组的长度相等，对应位置的元素相加</c>
+<c>* 如果两个输入元组的长度不等，则必须其中一个的长度为1。在这种情况下，长元组</c>
+<c>* 中的每个元素分别加上短元组的单一元素</c>
+<c>* 如果两个输入元组都是整数，返回结果时整数</c>
+<c>* 如果任何一个元素时浮点数，则返回浮点数</c>
+<c>* 如果输入的是字符串，则字符串连接</c>
+<c>* 如果输入的一个是数字，一个是字符串，则先将数字转换为字符串，然后再连接</c>
+<c>* 等价 =&gt; Sum := S1 + S2</c>
+<l>tuple_add  ([1,2,3, '2.2'], [1,2,1.0, 1.1],Sum)</l>
+<l>tuple_add  ([1,2], 1    ,Sum)</l>
+<c>* 除了不支持字符串减法，其他和tuple_add相同</c>
+<c>* 等价 =&gt; Diff := D1 - D2</c>
+<l>tuple_sub  (2,2,Diff)</l>
+<c>* 除了不支持字符串乘法，其他和tuple_add相同</c>
+<c>* 等价 =&gt; Prod := P1 * P2</c>
+<l>tuple_mult (2,3,Prod)</l>
+<c>* 如果输入的两个参数都是整数，则执行地板除</c>
+<c>* 如果有一个为浮点数，结果为标准除</c>
+<c>* 不支持字符串除法</c>
+<c>* 等价 =&gt; Quot := Q1 / Q2</c>
+<l>tuple_div (4,3,Quot)</l>
+<c>* 不支持字符串取负</c>
+<c>* 等价 =&gt; Neg := -T</c>
+<l>tuple_neg (3,Neg)</l>
+<c>* 参数为整数时返回整数</c>
+<c>* 参数为浮点数时返回浮点数</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Abs := abs(T)</c>
+<l>tuple_abs  (-6.6, Abs)</l>
+<c>* 不论参数的类型，均返回浮点数</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Abs := fabs(T)</c>
+<l>tuple_fabs (-6.6, Abs)</l>
+<c>* 不论参数的类型，均返回浮点数</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Ceil := ceil(T)</c>
+<l>tuple_ceil (2, Ceil)</l>
+<c>* 不论参数的类型，均返回浮点数</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Floor := floor(T)</c>
+<l>tuple_floor (1.99, Floor)</l>
+<c>* 获取整除的剩余部分</c>
+<c>* 仅支持整数</c>
+<c>* 等价 =&gt; Mod := T1 % T2</c>
+<l>tuple_mod  (3,2, Mod)</l>
+<c>* 对整数和浮点数均可</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Fmod := fmod(T1, T2)</c>
+<l>tuple_fmod (3.5,3.1, Fmod)</l>
+<c>* 获取两个元组对应元素的最大值</c>
+<c>* 对应元素的类型必须相同</c>
+<c>* 等价 =&gt; Max2 := max2(T1, T2)</c>
+<l>tuple_max2 ([2,3,'23'],[3,2,'32'], Max)</l>
+<c>* 获取两个元组对应元素的最小值</c>
+<c>* 对应元素的类型必须相同</c>
+<c>* 等价 =&gt; Min2 := min2(T1, T2)</c>
+<l>tuple_min2 ([2,3,'23'],[3,2,'32'], Min)</l>
+<c>* 返回第一个元素到每个索引的累加和</c>
+<c>* 所有元素必须为数值型</c>
+<c>* 等价 =&gt; Cumul := cumul(Tuple)</c>
+<l>tuple_cumul([1,2,3,4], Cumul)</l>
+<c>*****************************************************************</c>
+<c>* 三角函数</c>
+<c>*****************************************************************</c>
+<c>* 角度制转弧度制</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Rad := rad(Deg)</c>
+<l>tuple_rad (30, Rad)</l>
+<c>* 弧度制转角度制</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Deg := deg(Rad)</c>
+<l>tuple_deg (Rad, Deg)</l>
+<c>* 弧度制的正弦</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Sin := sin(T)</c>
+<l>tuple_sin(rad(30), Sin)</l>
+<c>* 弧度制的余弦</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Cos := cos(T)</c>
+<l>tuple_cos(rad(30), Cos)</l>
+<c>* 弧度制的正切</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; Tan := tan(T)</c>
+<l>tuple_tan(rad(45), Tan)</l>
+<c>* 弧度制的反正弦</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; ASin := asin(T)</c>
+<l>tuple_asin (0.5, ASin)</l>
+<c>* 弧度制的反余弦</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; ACos := acos(T)</c>
+<l>tuple_acos (0.5, ACos)</l>
+<c>* 弧度制的反正切</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; ATan := atan(T)</c>
+<l>tuple_atan (1, ATan)</l>
+<c>* 先计算Y/X的值，然后计算反正切</c>
+<c>* 不支持字符串</c>
+<c>* 等价 =&gt; ATan := atan2(Y, X)</c>
+<l>tuple_atan2 ([1,3],[1,4], ATan)</l>
+<c>* 双曲正弦</c>
+<c>* 等价 =&gt; Sinh := sinh(T)</c>
+<l>tuple_sinh (rad(30), Sinh)</l>
+<c>* 双曲余弦</c>
+<c>* 等价 =&gt; Cosh := cosh(T)</c>
+<l>tuple_cosh (rad(30), Cosh)</l>
+<c>* 双曲正切</c>
+<c>* 等价 =&gt; Tanh := tanh(T)</c>
+<l>tuple_tanh (rad(30), Tanh)</l>
+<c>* 指数运算</c>
+<c>* 等价 =&gt; Exp := exp(T)</c>
+<l>tuple_exp (1, Exp)</l>
+<c>* T1 * 2^{T2}</c>
+<c>* 等价 =&gt; Ldexp := ldexp(T1, T2)</c>
+<l>tuple_ldexp (2,3,Ldexp)</l>
+<c>* 自然对数</c>
+<c>* 等价 =&gt; Log := log(T)</c>
+<l>tuple_log (1,Log)</l>
+<c>* 以10为底的对数</c>
+<c>* 等价 =&gt; Log := log10(T)</c>
+<l>tuple_log10(1,Log)</l>
+<c>* 乘方</c>
+<c>* 等价 =&gt; Pow := pow(T1, T2)</c>
+<l>tuple_pow (2,2, Pow)</l>
+<c>* 均方根</c>
+<c>* 等价 =&gt; Sqrt := sqrt(T)</c>
+<l>tuple_sqrt(4,Sqrt)</l>
+<c>* 符号函数</c>
+<c>* 等价 =&gt; Sgn := sgn(T)</c>
+<l>tuple_sgn(0, Sgn)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 位运算（Bit Operations）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 按位与</c>
+<c>* 等价 =&gt; BAnd := T1 band T2</c>
+<c>* 1    &lt;===&gt; 00000001</c>
+<c>* 3    &lt;===&gt; 00000011</c>
+<c>* band &lt;===&gt; 00000001</c>
+<c>* bnot &lt;===&gt; 11111110</c>
+<c>* bor  &lt;===&gt; 00000011</c>
+<c>* bxor &lt;===&gt; 00000010</c>
+<l>tuple_band (1,  3, BAnd)</l>
+<c>* 负数的标示：负数通过补码显示</c>
+<c>*            如果源码的最左一位是1，则表示负数</c>
+<c>*                              0，则表示正数</c>
+<c>* 源码： 11111110</c>
+<c>* 取反:  00000001</c>
+<c>* 加一:  00000010</c>
+<c>* 负号: -00000010</c>
+<c>* 等价 =&gt; BNot := bnot T</c>
+<l>tuple_bnot ( BAnd, BNot)</l>
+<c>* 等价 =&gt; BOr := T1 bor T2</c>
+<l>tuple_bor  (1,  3, BOr)</l>
+<c>* 等价 =&gt; BXor := T1 bxor T2</c>
+<l>tuple_bxor (1,  3, BXor)</l>
+<c>* 向左移位</c>
+<c>* 等价 =&gt; Lsh := lsh(T, Shift)</c>
+<l>tuple_lsh  (32, 2, Lsh)</l>
+<c>* 向右移位</c>
+<c>* 等价 =&gt; Rsh := rsh(T, Shift)</c>
+<l>tuple_rsh  (32, 2, Rsh)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 比较运算（Comparison）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 将元组作为整体进行比较（比较元组的长度、类型、值），结果返回一个值</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Equal := T1 == T2 or Equal := T1 = T2</c>
+<l>tuple_equal ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Greater := T1 &gt; T2</c>
+<l>tuple_greater ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Greatereq := T1 &gt;= T2</c>
+<l>tuple_greater_equal ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Less := T1 &lt; T2</c>
+<l>tuple_less ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Lesseq := T1 &lt;= T2</c>
+<l>tuple_less_equal ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Nequal := T1 != T2 or Nequal := T1 # T2</c>
+<l>tuple_not_equal ([1,2,3],[1,2,3], Equal)</l>
+<c>*****************************************************************</c>
+<c>* 将元组对应元素进行比较（比较元组的长度、类型、值），返回多个值</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Equal := T1 [==] T2 or Equal := T1 [=] T2</c>
+<l>tuple_equal_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Greater := T1 [&gt;] T2</c>
+<l>tuple_greater_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Greatereq := T1 [&gt;=] T2</c>
+<l>tuple_greater_equal_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Less := T1 [&lt;] T2</c>
+<l>tuple_less_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Lesseq := T1 [&lt;=] T2</c>
+<l>tuple_less_equal_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>* 等价 =&gt; Nequal := T1 [!=] T2 or Nequal := T1 [#] T2</c>
+<l>tuple_not_equal_elem ([1,2,3],[1,2,3], Equal)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 转换（Conversion）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 将整数转换为ASCII码，如果对应的ASCII是可显示字符，则用可显示字符表示</c>
+<c>* 每个整数转换为一个ASCII码，输出为这个ASCII码组成的元组</c>
+<c>* 等价 =&gt; Chr := chr(T)</c>
+<l>tuple_chr ([100,48,255], Chr)</l>
+<c>* 将整数转换为ASCII码，如果对应的ASCII是可显示字符，则用可显示字符表示</c>
+<c>* 每个整数转换为一个ASCII码，并将这些ASCII码连接成一个字符串输出</c>
+<c>* 等价 =&gt; Chrt := chrt(T)</c>
+<l>tuple_chrt([100,48,255], Chr)</l>
+<c>* 测试字符串能否表示一个数值</c>
+<c>* 等价 =&gt; IsNumber := is_number(T)</c>
+<l>tuple_is_number(['1','2','3.6'], Chr)</l>
+<c>* 将字符串转换为数值</c>
+<c>* 等价 =&gt; Number := number(T)</c>
+<l>tuple_number(['1','2','3.6'], Chr)</l>
+<c>* 将数值型的值转换为整型</c>
+<c>* 等价 =&gt; Int := int(T)</c>
+<l>tuple_int([1,2,3.6], Chr)</l>
+<c>* 将数值型的值转换为浮点数</c>
+<c>* 等价 =&gt; Real := real(T)</c>
+<l>tuple_real ([1,2,3], Real)</l>
+<c>* 转换长度为1的字符串为整数</c>
+<c>* 等价 =&gt; Ord := ord(T)</c>
+<l>tuple_ord  ('A', Ord)</l>
+<c>* 转换字符串为整数</c>
+<c>* 等价 =&gt; Ords := ords(T)</c>
+<l>tuple_ords (['A','B'], Ords)</l>
+<c>* 四舍五入运算</c>
+<c>* 等价 =&gt; Round := round(T)</c>
+<l>tuple_round([1.2,1.5,1.6], Round)</l>
+<c>*****************************************************************</c>
+<c>* 格式化字符串 tuple_string( : : T, Format : String)</c>
+<c>*****************************************************************</c>
+<c>* Format string: &lt;flags&gt;&lt;field width&gt;&lt;precision&gt;&lt;conversion characters&gt;</c>
+<c>* flags: </c>
+<c>*    零个或多个标记，按任何顺序排列。修改转换规则的含义</c>
+<c>*    - 左对齐。默认是右对齐</c>
+<c>*    + 有符号。以正负号开头</c>
+<c>*    &lt;space&gt; 如果转换的第一个字符不是符号，则在前面添加空白</c>
+<c>*            但+和space同时出现，则不起作用</c>
+<c>*    # 值被转换为备用格式。</c>
+<c>*      对d和s的转换无效</c>
+<c>*      o</c>
+<c>* field width:</c>
+<c>*    一个十进制数字字符串用于指定最小的宽度</c>
+<c>*    如果转换结果的宽度小于给定的宽度，则根据左右对齐填充在前后添加空白</c>
+<c>* precision:</c>
+<c>*    对于d,o,x,X指定精度的最小位数</c>
+<c>*    对于e,f精度出现在点字符后</c>
+<c>*    对于g最大数量的字符</c>
+<c>*    对于s最大数量的字符串被打印</c>
+<c>* conversion characters:</c>
+<c>*    指定转换的类型，精度分量指定最小的宽度</c>
+<c>*     d 有符号十进制</c>
+<c>*     o 无符号8进制</c>
+<c>*     x 无符号十六进制，小写字母</c>
+<c>*     X 无符号十六进制，大写字母</c>
+<c>*     f 浮点数</c>
+<c>*     e,E 科学计数法</c>
+<c></c>
+<c>* 数值格式化成字符串</c>
+<l>tuple_string (-23, 'd', String)</l>
+<l>tuple_string (23, '-10.2f', String)</l>
+<l>tuple_string (4, '.7f', String)</l>
+<l>tuple_string (1234.56789, '+10.3f', String)</l>
+<l>tuple_string (255, 'x', String)</l>
+<l>tuple_string (255, 'X', String)</l>
+<l>tuple_string (0xff, '.5d', String)</l>
+<c>* 字符串格式化</c>
+<l>tuple_string ('total', '10s', String)</l>
+<l>tuple_string ('total', '-10s', String)</l>
+<l>tuple_string ('total', '-10.3s', String)</l>
+<l>tuple_string (-1234.56789, '-', String)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 创建（Creation）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Concat := [T1, T2]</c>
+<l>tuple_concat(1,2,Concat)</l>
+<c>* 等价 =&gt; Newtuple := gen_tuple_const(Length, Const)</c>
+<l>tuple_gen_const(10,1,Newtuple)</l>
+<c>* 等价 =&gt; Sequence := [Start:Step:End]</c>
+<l>tuple_gen_sequence(0,10,1,Sequence)</l>
+<c>* 0-1之间的随机数</c>
+<c>* 等价 =&gt; Rand := rand(Length)</c>
+<l>tuple_rand(5,Rand)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 元素顺序（Element Order）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Inverted := inverse(Tuple)</c>
+<l>tuple_inverse([1,5,2,3],Inverted)</l>
+<c>* 等价 =&gt; Sorted := sort(Tuple)</c>
+<l>tuple_sort([1,5,2,3], Sorted)</l>
+<c>* 等价 =&gt; Indices := sort_index(Tuple)</c>
+<l>tuple_sort_index([1,5,2,3],Indices)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 特征（Features）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Deviation := deviation(Tuple)</c>
+<l>tuple_deviation([1,5,2,3,2,4,3,1,2,3,4],Deviation)</l>
+<c>* 计算值的分布情况</c>
+<c>* </c>
+<l>tuple_histo_range ([1,5,2,3,2,4,3,1,2,3,4], 1, 5,3,Histo, BinSize)</l>
+<c>* 等价 =&gt; Length := |Tuple|</c>
+<l>tuple_length([1,5,2,3,2,4,3,1,2,3,4],Length)</l>
+<c>* 等价 =&gt; Max := max(Tuple)</c>
+<l>tuple_max([1,5,2,3,2,4,3,1,2,3,4], Max)</l>
+<c>* 等价 =&gt; Mean := mean(Tuple)</c>
+<l>tuple_mean([1,5,2,3,2,4,3,1,2,3,4],Mean)</l>
+<c>* 等价 =&gt; Median := median(Tuple)</c>
+<l>tuple_median([1,5,2,3,2,4,3,1,2,3,4],Median)</l>
+<c>* 等价 =&gt; Min := min(Tuple)</c>
+<l>tuple_min([1,5,2,3,2,4,3,1,2,3,4],Min)</l>
+<c>* 等价 =&gt; Sum := sum(Tuple)</c>
+<l>tuple_sum([1,5,2,3,2,4,3,1,2,3,4], Sum1)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 逻辑运算（Logical Operations）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 输入只能为整数</c>
+<c>* 等价 =&gt; And := T1 and T2</c>
+<l>tuple_and(1,2,And)</l>
+<c>* 等价 =&gt; Not := not T1</c>
+<l>tuple_not(1,Not)</l>
+<c>* 等价 =&gt; Or := T1 or T2</c>
+<l>tuple_or(1,2,Or)</l>
+<c>* 等价 =&gt; Xor := T1 xor T2</c>
+<l>tuple_xor(1,2,Xor)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 管理（Manipulation）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<l>tuple_insert([1,2,3], 0, 45,Extended)</l>
+<c>* 等价 =&gt; Reduced := remove(Tuple, Index)</c>
+<l>tuple_remove([1,2,3],0,Reduced)</l>
+<c>* 等价 =&gt; Replaced := replace(Tuple, Index, ReplaceTuple)</c>
+<l>tuple_replace([1,2,3], 2, 5,Replaced)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 选择（Selection）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Indices := find(Tuple, ToFind)</c>
+<l>tuple_find([3,4,5,6,1,2,3,4,0], [3,4], Indices)</l>
+<c>* 等价 =&gt; Index := find_first(Tuple, ToFind)</c>
+<l>tuple_find_first([3,4,5,6,1,2,3,4,0], [3,4], Indices)</l>
+<c>* 等价 =&gt; Index := find_last(Tuple, ToFind)</c>
+<l>tuple_find_last([3,4,5,6,1,2,3,4,0], [3,4], Indices)</l>
+<c>* 等价 =&gt; Selected := firstn(Tuple, Index)</c>
+<l>tuple_first_n([3,4,5,6,1,2,3,4,0], 5, Indices)</l>
+<c>* 等价 =&gt; Selected := lastn(Tuple, Index)</c>
+<l>tuple_last_n([3,4,5,6,1,2,3,4,0], 5, Indices)</l>
+<c>* 等价 =&gt; Selected := Tuple[Index]</c>
+<l>*         Selected := subset(Tuple, Index)</l>
+<l>tuple_select([3,4,5,6,1,2,3,4,0], 0,Indices)</l>
+<c>* 根据掩码选择元素，0表示不选择，1表示选择</c>
+<c>* 等价 =&gt; Selected := select_mask(Tuple, Mask)</c>
+<l>tuple_select_mask([0,1,2,3,4,5], [0,1,0,1,0,1],Selected)</l>
+<c>* 等价 =&gt; Selected := Tuple[Leftindex:Rightindex]</c>
+<l>tuple_select_range([3,4,5,6,1,2,3,4,0], 0,5,Selected)</l>
+<c>* 先排序，后按位置进行选择</c>
+<c>* 等价 =&gt; Selected := select_rank(Tuple, RankIndex)</c>
+<l>tuple_select_rank([3,4,5,6,1,2,3,4,0], 0, Selected)</l>
+<c>* 等价 =&gt; Selected := Tuple{Index}</c>
+<l>tuple_str_bit_select([3,4,5],2,Selected)</l>
+<l>tuple_str_bit_select(['abc','bcde'],2,Selected)</l>
+<c>* 除了一个元组的连续相同元素外，放弃其他所有元素</c>
+<c>* 等价 =&gt; Uniq := uniq(Tuple)</c>
+<l>tuple_uniq([0,0,1,1,1,2,0,1],Uniq)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 集（Sets）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Difference := difference(Set1, Set2)</c>
+<l>tuple_difference( [0,1,3,3,5],  [2,3,5,10], Difference)</l>
+<c>* 等价 =&gt; Intersection := intersection(Set1, Set2)</c>
+<l>tuple_intersection( [0,1,3,3,5],  [2,3,5,10], Difference)</l>
+<c>* 仅保留一个连续相同的元素</c>
+<c>* 等价 =&gt; SymmDiff := symmdiff(Set1, Set2)</c>
+<l>tuple_symmdiff( [0,1,3,3,5],  [2,3,5,10], Difference)</l>
+<c>* 等价 =&gt; Union := union(Set1, Set2)</c>
+<l>tuple_union( [0,1,3,3,5],  [2,3,5,10], Difference)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 字符串操作（String Operations）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 获取环境变量的值</c>
+<c>* 等价 =&gt; Values := environment(Names)</c>
+<l>tuple_environment('PATH',PathValue)</l>
+<c>*****************************************************************</c>
+<c>* 正则表达式</c>
+<c>* ^      匹配字符串的开头</c>
+<c>* $      匹配字符串的结尾 (不支持字符串尾部的换行符)</c>
+<c>* .      匹配除换行符意外的任何字符</c>
+<c>* [...]  匹配列表中的任意一个字符</c>
+<c>*        如果列表的第一个字符是^，则不匹配列表中的任何字符</c>
+<c>*        可以使用连字符-，表示连续的字符</c>
+<c>*        除字符\意外，其他字符在列表中都表示其原始含义</c>
+<c></c>
+<c>* 匹配量词</c>
+<c>* *      匹配其前的字符或组零次或多次</c>
+<c>* +      匹配一次或多次</c>
+<c>* ?      匹配零次或一次</c>
+<c>* {n,m}  匹配最少n次，最多m次</c>
+<c>* {n}    匹配n次</c>
+<c>* 默认情况下，匹配量词的结果是贪婪的，即尽可能多的匹配更多的字符。可以在量</c>
+<c>* 词后加?，表示尽可能少的匹配字符</c>
+<c></c>
+<c>* ( )    对子模式分组，并创建捕获组。被组捕获的子串将独立存储</c>
+<c>* (?: )  在不创建捕获组的情况下对子模式进行分组</c>
+<c></c>
+<c>* \      转义字符</c>
+<c>*        \d,\D  匹配数字</c>
+<c>*        \w,\W  匹配字母、数字、下划线</c>
+<c>*        \s,\S  匹配空白字符</c>
+<c>*        \b,\B  匹配字符边界</c>
+<c></c>
+<c>* 额外特征</c>
+<c>* ignore_case                        忽略大小写</c>
+<c>* multiline                          在模式串的前后分别添加^和$</c>
+<c>* dot_matches_all                    使.能够匹配换行符</c>
+<c>* newline_lf/newline_crlf/newline_cr 指定换行符的类别，默认：</c>
+<c>*                                    Windows: CR/LF</c>
+<c>*                                    Unix-like: LF</c>
+<c>*****************************************************************</c>
+<c>* 验证字符串中是否有满足正则表达式模板的子串</c>
+<c>* 等价 =&gt; NumMatches := regexp_test(Data, Expression) or </c>
+<l>*        NumMatches := Data =~ Expression</l>
+<l>tuple_regexp_test ('p10662599755', '[A-Z]*', Result)</l>
+<c>* Returns 0</c>
+<l>tuple_regexp_test ('p10662599755', ['[A-Z]*','ignore_case'], Result)</l>
+<c>* Returns 1</c>
+<c>*****************************************************************</c>
+<c>* 从字符串中返回【第一个】匹配正则模板的子串</c>
+<c>* 等价 =&gt; Matches := regexp_match(Data, Expression)</c>
+<c>* abba中满足模式a*b*的子串有两个，分别为：abb,a</c>
+<l>tuple_regexp_match ('abba', 'a*b*', Result)</l>
+<c>* Returns 'abb'</c>
+<c>* abba中满足模式b*a*的子串有两个，分别为：a,bba</c>
+<l>tuple_regexp_match ('abba', 'b*a*', Result)</l>
+<c>* Returns 'a'</c>
+<l>tuple_regexp_match ('abba', 'b+a*', Result)</l>
+<c>* Returns 'bba'</c>
+<l>tuple_regexp_match ('abba', '.a', Result)</l>
+<c>* Returns 'ba'</c>
+<l>tuple_regexp_match ('abba', '[ab]*', Result)</l>
+<c>* Returns 'abba'</c>
+<c>*****************************************************************</c>
+<c>* 提取子模式子串</c>
+<l>tuple_regexp_match (['img123','img124'], 'img(.*)', Result)</l>
+<c>* Returns ['123','124']</c>
+<l>tuple_regexp_match ('mydir/img001.bmp', 'img(.*)\\.(.*)', Result)</l>
+<c>* Returns ['001','bmp']</c>
+<c>*****************************************************************</c>
+<c>* 替换【第一个】匹配结果</c>
+<c>* 可选项：replace_all 替换所有匹配结果</c>
+<c>* $0 引用第一个子模式的匹配结果</c>
+<c>* $i(i&lt;=9)引用第i+1个子模式的匹配结果</c>
+<c>* $$引用字符$</c>
+<c>* 等价 =&gt; Result := regexp_replace(Data, Expression, Replace)</c>
+<l>tuple_regexp_replace(['img10.bmp','img11.bmp','img12.bmp'], 'img(.*).bmp', 'out$1.txt', Result)</l>
+<c>* Returns ['out10.txt','out11.txt','out12.txt']</c>
+<c>*****************************************************************</c>
+<c>* 在元组的元素中应用正则表达式，并提取满足条件的元素</c>
+<c>* 可选项：invert_match 反转匹配结果</c>
+<c>* 等价 =&gt; Selection := regexp_select(Data, Expression)</c>
+<l>tuple_regexp_select (['a.png','b.txt','c.bmp','d.dat'], '.(bmp|png)', Result)</l>
+<c>* Returns ['a.png','c.bmp']</c>
+<l>tuple_regexp_select (Result, ['training','invert_match'], Matches)</l>
+<c>* Returns all file names that do *not* contain the string 'training'</c>
+<c>*****************************************************************</c>
+<c>* 字符串分割</c>
+<c>*****************************************************************</c>
+<c>* 通过指定的字符集分割字符转</c>
+<c>* 如果需要分割的元组长度和分隔符的元组长度相同，则使用对应元素进行分割</c>
+<c>* 否则，引用分隔符元组中的每个字符串配别对输入元组进行分割</c>
+<c>* 等价 =&gt; Substrings := split(String, Separator)</c>
+<l>tuple_split('data1;data2:7;data3',[';',':;'], Substrings)</l>
+<c>* Substrings = ['data1', 'data2:7', 'data3', 'data1', 'data2', '7', 'data3']</c>
+<l>tuple_split('1,2,3,4,5',',', Substrings)</l>
+<c>*****************************************************************</c>
+<c>* 字符串查找</c>
+<c>*****************************************************************</c>
+<c>* 提取从开头到指定索引的子串</c>
+<c>* 等价 =&gt; Substring := str_firstn(String, Position)</c>
+<l>tuple_str_first_n('1,2,3,4,5', 4, Substring)</l>
+<c>* 提取从指定索引到字符串结尾的子串</c>
+<c>* 等价 =&gt; Substring := str_lastn(String, Position)</c>
+<l>tuple_str_last_n('1,2,3,4,5', 4, Substring)</l>
+<c>* 正向查找字符</c>
+<c>* 等价 =&gt; Position := strchr(String, ToFind)</c>
+<l>tuple_strchr('1,2,3,4,5',',3', Position)</l>
+<c>* 方向查找字符</c>
+<c>* 等价 =&gt; Position := strrchr(String, ToFind)</c>
+<l>tuple_strrchr('1,2,3,4,5',',3', Position)</l>
+<c>* 正向查找字符串</c>
+<c>* 等价 =&gt; Position := strstr(String, ToFind)</c>
+<l>tuple_strstr('1,2,3,4,5', ',2', Position)</l>
+<c>* 反向查找字符串</c>
+<c>* 等价 =&gt; Position := strrstr(String, ToFind)</c>
+<l>tuple_strrstr('1,2,3,4,5', ',2' ,Position)</l>
+<c>*****************************************************************</c>
+<c>* 获取字符串元组中每个元素的长度</c>
+<c>* 等价 =&gt; Length := strlen(T1)</c>
+<l>tuple_strlen(['123','adfad','dafdfasfd'], Length)</l>
+<c>*****************************************************************</c>
+<c>* 获取子串</c>
+<c>*****************************************************************</c>
+<c>* 等价 =&gt; Substring := String{Position1:Position2}</c>
+<l>tuple_substr('dafdfasfd', 2,4,Substring1)</l>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 类型判断（Type）</c>
+<c>*****************************************************************</c>
+<c>*****************************************************************</c>
+<c>* 是否全部元素的类型都为整型，空元组也可以是整型</c>
+<c>* 等价 =&gt; IsInt := is_int(T)</c>
+<l>tuple_is_int ([3.1416,'pi',3], IsIntA)</l>
+<c>* IsIntA = false</c>
+<l>tuple_is_int ([1,2,3], IsIntB)</l>
+<c>* IsIntB = true  </c>
+<l>tuple_is_int ([], IsIntC)</l>
+<c>* IsIntC = true</c>
+<c>*****************************************************************</c>
+<c>* 判断元组元素的类型是否为整型</c>
+<c>* 等价 =&gt; IsInt := is_int_elem(T)</c>
+<l>tuple_is_int_elem ([3.1416,'pi',3,3.0], IsInt)</l>
+<c>* IsInt = [false, false, true, false]</c>
+<c>*****************************************************************</c>
+<c>* 判断元组是否为混合类型</c>
+<c>* 等价 =&gt; IsMixed := is_mixed(T)</c>
+<l>tuple_is_mixed ([3.1416,'pi',3], IsMixedA)</l>
+<c>* IsMixedA = true</c>
+<l>tuple_is_mixed (['a','b','111'], IsMixedB)</l>
+<c>* IsMixedB = false  </c>
+<l> tuple_is_mixed ([], IsMixedC)</l>
+<c>* IsMixedC = true</c>
+<c>*****************************************************************</c>
+<c> * 判断元组的所有元素是否都是浮点型</c>
+<c> * 等价 =&gt; IsReal := is_real(T)</c>
+<l>tuple_is_real ([3.1416,'pi',3], IsRealA)</l>
+<c>* IsRealA = false</c>
+<l>tuple_is_real ([1.0,2.0,3.0], IsRealB)</l>
+<c>* IsRealB = true</c>
+<l>tuple_is_real ([], IsRealC)</l>
+<c>* IsRealC = true</c>
+<c>*****************************************************************</c>
+<c>* 判断元组的每个元素是否为浮点型</c>
+<c> * 等价 =&gt; IsReal := is_real_elem(T)</c>
+<l>tuple_is_real_elem ([3.1416,'pi',3,3.0], IsReal)</l>
+<c>* IsReal = [true, false, false, true]</c>
+<c>*****************************************************************</c>
+<c>* 判断元组的所有元素是否都为字符串</c>
+<c>* 等价 =&gt; IsString := is_string(T)</c>
+<l>tuple_is_string ([3.1416,'pi',3], IsStringA)</l>
+<c>* IsStringA = false</c>
+<l>tuple_is_string (['a','b','111'], IsStringB)</l>
+<c>* IsStringB = true</c>
+<l>tuple_is_string ([], IsStringC)</l>
+<c>* IsStringC = true</c>
+<c>*****************************************************************</c>
+<c>* 判断元组的每个元素是否为字符串</c>
+<c> * 等价 =&gt; IsString := is_string_elem(T)</c>
+<l>tuple_is_string_elem ([3.1416,'pi',3], IsString)</l>
+<c>* IsString = [false, true, false]</c>
+<c>*****************************************************************</c>
+<c>* 元组的数据类型</c>
+<c>* H_TYPE_INT    (1)</c>
+<c>*    所有元素的数据类型都为整型</c>
+<c>* H_TYPE_REAL   (2)</c>
+<c>*    所有元素的数据类型都为浮点型</c>
+<c>* H_TYPE_STRING (4)</c>
+<c>*    所有元素的数据类型都为字符串</c>
+<c>* H_TYPE_MIXED  (8)</c>
+<c>*    1. 元素拥有多种数据类型</c>
+<c>*    2. 输入元组在修改单个元素的数据类型之后，即使所有元素的数据类型变成相</c>
+<c>*       同的。但由于运行时的原因，导致未能自动的优化。</c>
+<c>* H_TYPE_ANY    (15)</c>
+<c>*    空元组</c>
+<c>*    空元组可以是任何类型，因此使用tuple_is_int，tuple_is_mixed，</c>
+<c>*    tuple_is_string，tuple_is_real的结果都为1</c>
+<c>* 等价 =&gt; Type := type(T)</c>
+<c>*****************************************************************</c>
+<l>test := [3.1416,'pi',3]</l>
+<l>tuple_type (test, TypeA)</l>
+<c>* TypeA = H_TYPE_MIXED</c>
+<l>test[1] := 4</l>
+<l>tuple_type (test, TypeA)</l>
+<c>* TypeA = H_TYPE_MIXED</c>
+<l>tuple_type (['a','b','111'], TypeB)</l>
+<c>* TypeB = H_TYPE_STRING</c>
+<l>tuple_type ([], TypeC)</l>
+<c>* TypeC = H_TYPE_ANY</c>
+<c>*****************************************************************</c>
+<c>* 元组中元素的数据类型</c>
+<c>* H_TYPE_INT    (1)</c>
+<c>* H_TYPE_REAL   (2)</c>
+<c>* H_TYPE_STRING (4)</c>
+<c>* 等价 =&gt; Types := type_elem(T)</c>
+<c>*****************************************************************</c>
+<l>tuple_type_elem ([3.1416,'pi',3], Types)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="19.11.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_update_off ()</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window_fit_size (0, 0, 640, 480, -1, -1, WindowHandle)</l>
+<l>set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<c>***********************************************************************************************************************</c>
+<c>* Compute Devices</c>
+<c>***********************************************************************************************************************</c>
+<c>***********************************************************************************************************************</c>
+<c>* 查询电脑上可用的计算设备</c>
+<c>* HALCON目前仅支持OpenCL兼容的GPU。这些GPU支持OpenCL拓展cl_khr_byte_addressable_store和图像</c>
+<c>* 不能通过远程坐标访问OpenCL，因为远程坐标不支持访问图形设备驱动</c>
+<l>query_available_compute_devices (DeviceIdentifier)</l>
+<l>if (|DeviceIdentifier| == 0)</l>
+<l>  return ()</l>
+<l>endif</l>
+<c>***********************************************************************************************************************</c>
+<c>* 获取计算设备的相关信息</c>
+<c>* 设备名称</c>
+<l>get_compute_device_info (DeviceIdentifier, 'name',               name)</l>
+<c>* 制造商</c>
+<l>get_compute_device_info (DeviceIdentifier, 'vendor',             vendor)</l>
+<c>* OpenCL版本</c>
+<l>get_compute_device_info (DeviceIdentifier, 'platform_version',   platform_version)</l>
+<c>* 设备驱动版本</c>
+<l>get_compute_device_info (DeviceIdentifier, 'driver_version',     driver_version)</l>
+<c>* 设备支持的OpenCL拓展</c>
+<l>get_compute_device_info (DeviceIdentifier, 'extensions',         extensions)</l>
+<c>* 设备是否支持图像</c>
+<l>get_compute_device_info (DeviceIdentifier, 'image_support',      image_support)</l>
+<c>* OpenCL支持的最大图像宽度</c>
+<l>get_compute_device_info (DeviceIdentifier, 'image2d_max_width',  image2d_max_width)</l>
+<c>* OpenCL支持的最大图像高度</c>
+<l>get_compute_device_info (DeviceIdentifier, 'image2d_max_height', image2d_max_height)</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 打开计算设备</c>
+<l>open_compute_device (DeviceIdentifier[0], DeviceHandle)</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 获取计算设备参数，即当前HALCON线程是否支持这些参数</c>
+<c>* 是否支持page locked memory(pinned memory)。pinned memory可以加快设备与主机之间的数据传输速度</c>
+<c>* 如果支持，所有算子输出的图像矩阵，将被创建在pinned memory</c>
+<l>get_compute_device_param (DeviceHandle, 'alloc_pinned',              alloc_pinned)</l>
+<c>* 算子在计算设备上执行，不会等待计算的完成再返回，而是在调用计算后立即返回</c>
+<l>get_compute_device_param (DeviceHandle, 'asynchronous_execution',    asynchronous_execution)</l>
+<c>* 计算设备的缓冲区的最大字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'buffer_cache_capacity',     buffer_cache_capacity)</l>
+<c>* 当前可用的计算设备缓冲区的字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'buffer_cache_used',         buffer_cache_used)</l>
+<c>* 计算设备的图像缓冲区的最大字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'image_cache_capacity',      image_cache_capacity)</l>
+<c>* 当前可用的计算设备图像缓冲区的字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'image_cache_used',          image_cache_used)</l>
+<c>* 计算设备的pinned memory的最大字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'pinned_mem_cache_capacity', pinned_mem_cache_capacity)</l>
+<c>* 当前可用的计算设备pinned memory字节数</c>
+<l>get_compute_device_param (DeviceHandle, 'pinned_mem_cache_used',     pinned_mem_cache_used)</l>
+<c>***********************************************************************************************************************</c>
+<c>* 设置计算设备参数</c>
+<c>* 如果设置为'true'，不论算子是否执行在计算设备上，当前线程调用的所有算子输出的图像矩阵都将在pinned memory上分配内存。这将加速主机</c>
+<c>* 与设备之间的传输速度。然而，过度地使用pinned memory内存将影响整个系统的性能。如果下一个使用的算子将在计算设备上运行，可以将上一个</c>
+<c>* 算子分配的内存分配到pinned memory内存上。当所有需要在计算设备上执行算子已完成，pinned memory内存分配应该被取消。</c>
+<l>set_compute_device_param (DeviceHandle, 'alloc_pinned',              alloc_pinned)</l>
+<c>* 如果设置为'true'，执行在计算设备上的算子，将直接返回而不等后算子的执行完成。所有的设备计算都是同步的，只要有一个计算设备的输出在CPU</c>
+<l>set_compute_device_param (DeviceHandle, 'asynchronous_execution',    'false')</l>
+<c>* 计算设备的缓冲区的最大字节数。默认为可用的1/3</c>
+<l>set_compute_device_param (DeviceHandle, 'buffer_cache_capacity',     buffer_cache_capacity)</l>
+<c>* 计算设备的图像缓冲区的最大字节数。默认为可用的1/3</c>
+<l>set_compute_device_param (DeviceHandle, 'image_cache_capacity',      image_cache_capacity)</l>
+<c>* 计算设备的最大pinned memory内存的字节数，默认为32M</c>
+<l>set_compute_device_param (DeviceHandle, 'pinned_mem_cache_capacity', pinned_mem_cache_capacity)</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 初始化计算设备</c>
+<c>* 在计算设备上初始化指定的算子集合。如果没有显示调用init_compute_device算子，初始化将按需执行</c>
+<c>* 通过get_operator_info算子测试一个算子是否在计算设备上执行</c>
+<l>init_compute_device (DeviceHandle, 'affine_trans_image')</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 激活计算设备</c>
+<c>* 在当前HALCON线程上激活计算设备。如果算子能够在计算设备上运行，那么该线程接下来调用的算子都将运行在计算设备</c>
+<c>* 目前，HALCO你仅支持一个计算设备，如果激活下一个设备，那么先前激活的计算设备将自动地解除激活</c>
+<l>activate_compute_device (DeviceHandle)</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 测试，在GPU上运行</c>
+<l>read_image (Image, 'rings_and_nuts')</l>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>hom_mat2d_scale (HomMat2DIdentity, 0.9, 0.9, 320, 240, HomMat2DScale)</l>
+<l>hom_mat2d_rotate (HomMat2DScale, 0.78, 320, 240, HomMat2D)</l>
+<c></c>
+<l>Loops := 200</l>
+<c>* 该调用是为了填充缓冲区</c>
+<l>affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')</l>
+<l>count_seconds (Before)</l>
+<l>for Index := 1 to Loops by 1</l>
+<l>    affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')</l>
+<l>endfor</l>
+<l>count_seconds (After)</l>
+<l>TimeGPU := (After - Before) * 1000.0 / Loops</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 取像计算设备的激活状态</c>
+<l>deactivate_compute_device (DeviceHandle)</l>
+<c></c>
+<l>affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')</l>
+<l>count_seconds (Before)</l>
+<l>for Index := 1 to Loops by 1</l>
+<l>    affine_trans_image (Image, ImageAffineTrans, HomMat2D, 'constant', 'false')</l>
+<l>endfor</l>
+<l>count_seconds (After)</l>
+<l>TimeCPU := (After - Before) * 1000.0 / Loops</l>
+<c>***********************************************************************************************************************</c>
+<c>* Database</c>
+<c>***********************************************************************************************************************</c>
+<c>* 1. count_relation</c>
+<c>*    计算从调用set_system('database','true')之后，HALCON数据库中存在指定类型的数据的数量。</c>
+<c>*    如果未调用set_system('database','true')，而调用该算子，将返回零。在这种情况下，如果通过set_system('do_low_error','true')</c>
+<c>*    则会有警告提示</c>
+<c>* </c>
+<c>* HALCON数据库管理五个被称为关系的表。如果使能，HALCON数据库包好基本的关系对于region data, image matrices, xlds, object and tuple</c>
+<c>* region和image分别是由region-data relations 和image-matrix relation构建。</c>
+<c>* 一个region包含一个指向存在于region-data relation中的元组的指针</c>
+<c>* 一个image包含一个指向存在于region-data relation中元组的指针，还包含一个或多个指向位于maxtrix relation中元组的指针。多通道图像有多个指针</c>
+<c>* region 和 image 都被称为对象。一个region可以看作为一个特殊的没有image matrix的图形对象。</c>
+<c>* Close the graphics window in order to close the graphics stack, which would influence the measurement.</c>
+<c>* 'image'  - 图像矩阵</c>
+<c>* 'region' - 区域或图像域</c>
+<c>* 'XLD'    - 该数据没有灰度值且以亚像素精度存储</c>
+<c>* 'object' - 图像对象</c>
+<c>* 'tuple'  - </c>
+<l>dev_close_window ()</l>
+<c></c>
+<c>* 使能HALCON数据库条目计算</c>
+<l>set_system ('database','true')</l>
+<c>*</c>
+<l>count_relation ('image',  I1)</l>
+<l>count_relation ('region', R1)</l>
+<l>count_relation ('XLD',    X1)</l>
+<l>count_relation ('object', O1)</l>
+<l>count_relation ('tuple',  T1)</l>
+<c>*</c>
+<c>* Result:</c>
+<c>* I1 = 0</c>
+<c>* R1 = 0</c>
+<c>* X1 = 0</c>
+<c>* O1 = 0</c>
+<c>* T1 = 0</c>
+<c>*</c>
+<l>read_image (Patras, 'patras')</l>
+<c>*</c>
+<l>count_relation ('image', I2)</l>
+<l>count_relation ('region', R2)</l>
+<l>count_relation ('XLD', X2)</l>
+<l>count_relation ('object', O2)</l>
+<l>count_relation ('tuple', T2)</l>
+<l>set_system ('database','false')</l>
+<c>*</c>
+<c>* I2 = 3  (three channels of the rgb image 'patras')</c>
+<c>* R2 = 1  (the image domain of the image 'patras')</c>
+<c>* X2 = 0  (no XLD data)</c>
+<c>* O2 = 1  (the iconic object holding the channels and the domain)</c>
+<c>* T2 = 0  (no empty object or object array )</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* 查看直到调用该算子之前使用到的模块</c>
+<l>get_modules(UsedModules, ModuleKey)</l>
+<c></c>
+<c>* 为HALCON的图形对象重置HALCON系统</c>
+<l>reset_obj_db (128, 128, 0)</l>
+<c>***********************************************************************************************************************</c>
+<c>* Error Handling</c>
+<c>***********************************************************************************************************************</c>
+<c>***********************************************************************************************************************</c>
+<c>* 获取与设置HALCON的控制方式</c>
+<l>get_check (CheckMode)</l>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>*激活或禁用指定的HALCON控制方式</c>
+<c>* 如果某个控制模式被激活，参数等在运行时被检查。一旦不一致被检测到，程序将被一个异常中断</c>
+<c>* 推荐在程序开发过程中激活控制模式，在开发完成后禁用激活模式。如果禁用了控制模式的情况下发生一个错误，那么系统正在对一个不期望</c>
+<c>* 的行为做出反应</c>
+<c>* 支持的控制模式：</c>
+<c>* 'color' - 如果该模式被激活，仅当前用于显示窗口支持的颜色可以被使用，否则报错。</c>
+<c>*           如果该模式被禁用，使用当前用于显示的窗口不支持的颜色，将使用受支持的近似颜色</c>
+<c>* 'text' - 如果激活该模式，将检查文本光标的位置以及是否超出窗体边界。如果禁止，超出的部分被剪切</c>
+<c>* 'data' - 是否检查图形对象的一致性</c>
+<c>* 'interface' - 如果激活，宿主语言与HALCON程序的接口将被检查</c>
+<c>* 'database' - 对象的一致性检测</c>
+<c>* 'give_error' - 是否错误触发异常。如果被禁用，引用程序必须提供一个合适的错误描述。</c>
+<c>* 'father' - 如果该控制模式被激活当调用open_window算子时，允许指定一个窗口作为新窗口的父窗口</c>
+<c>* 'region' - 一致性检查</c>
+<c>* 'clear' - 如果一串对象需要调用clear_obj进行取消，在独立的对象不存在或被销毁后，将引发异常。激活该模式，则变成忽略</c>
+<c>* 'memory' - 检查内存块是否被HALCON内存管理释放且重写内存边界</c>
+<c>* 'all' - 激活所有模式</c>
+<c>* 'none' - 禁用所有模式</c>
+<c>* 'default' - 默认设置，仅开启['give_error','database']</c>
+<c>***********************************************************************************************************************</c>
+<c>* 根据错误码查看错误信息</c>
+<c>* set_check("~give_error");</c>
+<c>* err = send_region(region,socket);</c>
+<c>* set_check("give_error");</c>
+<l>* if (err != H_MSG_TRUE)</l>
+<c>* {</c>
+<c>*     get_error_text((Hlong)err,message);</c>
+<c>*     fprintf(stderr,"my error message: %s\n",message);</c>
+<c>*     exit(1);</c>
+<c>* }</c>
+<c>***********************************************************************************************************************</c>
+<c>* 获取调用线程最后一个HALCON错误的扩展信息</c>
+<c>* get_extended_error_info</c>
+<c>***********************************************************************************************************************</c>
+<c>* HALCON调试工具</c>
+<c>* The datacontrol is activated by using set_spy('mode','on'),deactivated by using set_spy('mode','off':).</c>
+<c>* init spy: Setting of the wished control modi *</c>
+<c>* set_spy("mode","on");</c>
+<c>* set_spy("operator","on");</c>
+<c>* set_spy("input_control","on");</c>
+<c>* set_spy("output_control","on");</c>
+<c>* calling of program section, that will be examined */</c>
+<c>* set_spy("mode","off");  </c>
+<c></c>
+<c></c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* I/O Devices</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Infomation</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Multithreading</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Operating System</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Parallelization</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Parameters</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Serial</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+<c>***********************************************************************************************************************</c>
+<c>* Serialized Item</c>
+<c>***********************************************************************************************************************</c>
+<c>***********************************************************************************************************************</c>
+<c>* Sockets</c>
+<c>***********************************************************************************************************************</c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
