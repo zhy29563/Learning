@@ -130,6 +130,12 @@ Note
     contours. In order to solve this problem, you need to call drawContours separately for each sub-group
     of contours, or iterate over the collection using contourIdx parameter.
 '''
+contour1 = np.ndarray((4,1,2), np.float, array([
+            array([
+                array([0,0]),
+                array([100,0]),
+                array([100,100]),
+                array([0,100])])])
 contours = [
         array([
             array([
