@@ -130,27 +130,11 @@ Note
     contours. In order to solve this problem, you need to call drawContours separately for each sub-group
     of contours, or iterate over the collection using contourIdx parameter.
 '''
-contour1 = np.ndarray((4,1,2), np.float, array([
-            array([
-                array([0,0]),
-                array([100,0]),
-                array([100,100]),
-                array([0,100])])])
-contours = [
-        array([
-            array([
-                array([0,0]),
-                array([100,0]),
-                array([100,100]),
-                array([0,100])])]),
-        array([
-            array([
-                array([100,100]),
-                array([200,100]),
-                array([200,200]),
-                array([100,200])])])
-    ]
-cv.drawContours(mat, contours, -1, (0,0,255), 2)
+contour = np.ndarray((4,1,2), np.uint8, np.array([[[0,0]], 
+                                         [[100,0]], 
+                                         [[100,100]],
+                                         [[0,100]]]))
+cv.drawContours(mat, [contour], -1, (0,0,255), 2)
 
 cv.imshow('test', mat)
 cv.waitKey()
